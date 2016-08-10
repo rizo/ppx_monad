@@ -34,4 +34,4 @@ let () =
   | None      -> print_endline "error"
 ```
 
-**Warning**: this extension conflicts with the syntax for mutable update of object instances. Since objects are not considered an idiomatic OCaml and are not used frequently (and even less with mutable fields), this extension can be used without issues.
+**Warning**: this extension conflicts with the syntax for mutable update of object instances. Since objects are not considered an idiomatic OCaml and are not used frequently (and even less with mutable fields), this extension can be safely used in regular projects.
