@@ -16,6 +16,12 @@ module Option = struct
     | None   -> None
 end
 
+let put_line str =
+  try
+    Some (output_string (str ^ "\n"))
+  with e ->
+    None
+
 let get_line () =
   try
     Some (input_line stdin)
@@ -23,7 +29,8 @@ let get_line () =
     None
 
 let concat_lines () =
-  let open Option in
+  let open%monad Option in
+  put_line "input two lines";
   a <- get_line ();
   b <- get_line ();
   return (a ^ b)
