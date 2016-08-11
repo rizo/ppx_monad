@@ -28,12 +28,15 @@ let get_line () =
   with End_of_file ->
     None
 
+open Option
+
 let concat_lines () =
-  let open%monad Option in
-  put_line "input two lines";
-  a <- get_line ();
-  b <- get_line ();
-  return (a ^ b)
+  begin%monad
+    put_line "input two lines";
+    a <- get_line ();
+    b <- get_line ();
+    return (a ^ b)
+  end
 
 let () =
   match concat_lines () with
