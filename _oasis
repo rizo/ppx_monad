@@ -1,0 +1,20 @@
+OASISFormat:  0.4
+Name:         ppx_monad
+Version:      1.0
+Synopsis:     Minimalistic monad syntax for OCaml.
+Authors:      Rizo Isrof <rizo@odis.io>
+License:      MIT
+Plugins:      META (0.4), DevFiles (0.4)
+BuildTools:   ocamlbuild
+OCamlVersion: >= 4.02
+FilesAB:      lib/META.ab
+
+PreInstallCommand:   $ocamlfind install ppx_monad lib/META
+PreUninstallCommand: $ocamlfind remove ppx_monad
+
+Executable ppx_monad
+  Path:             lib
+  BuildDepends:     compiler-libs.common, ppx_tools
+  MainIs:           ppx_monad.ml
+  CompiledObject:   best
+

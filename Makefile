@@ -1,32 +1,60 @@
-TARGET=ppx_monad
+# findlib: [WARNING] Interface topdirs.cmi occurs in several directories...
+# OCAMLFIND_IGNORE_DUPS_IN = $(shell ocamlfind query compiler-libs)
+# export OCAMLFIND_IGNORE_DUPS_IN
 
-default: build
+# OASIS_START
+# DO NOT EDIT (digest: a3c674b4239234cbbe53afe090018954)
 
-help:
-	@echo "make help  	- this help message"
-	@echo "make build   - build the syntax extension"
-	@echo "make test    - run the tests"
-	@echo "make code    - show the processed code of the tests"
-	@echo "make tree    - show the syntax tree of the tests"
-	@echo "make clean   - remove the binaries and build artifacts"
+SETUP = ocaml setup.ml
 
-build:
-	ocamlbuild -package compiler-libs.bytecomp src/$(TARGET).native
+build: setup.data
+	$(SETUP) -build $(BUILDFLAGS)
 
-test: build
-	ocamlopt -ppx ./$(TARGET).native ./tests/test_$(TARGET).ml -o ./test_$(TARGET).native
-	./test_$(TARGET).native
+doc: setup.data build
+	$(SETUP) -doc $(DOCFLAGS)
 
-process: build
-	ocamlopt -dsource -ppx ./$(TARGET).native ./tests/test_$(TARGET).ml -o ./test_$(TARGET).native
+test: setup.data build
+	$(SETUP) -test $(TESTFLAGS)
 
-source: build
-	ocamlopt -dsource ./tests/test_$(TARGET).ml
+all:
+	$(SETUP) -all $(ALLFLAGS)
 
-tree: build
-	ocamlopt -dparsetree -ppx ./$(TARGET).native ./tests/test_$(TARGET).ml
+install: setup.data
+	$(SETUP) -install $(INSTALLFLAGS)
+
+uninstall: setup.data
+	$(SETUP) -uninstall $(UNINSTALLFLAGS)
+
+reinstall: setup.data
+	$(SETUP) -reinstall $(REINSTALLFLAGS)
 
 clean:
-	ocamlbuild -clean
-	rm -rf *.native
+	$(SETUP) -clean $(CLEANFLAGS)
+
+distclean:
+	$(SETUP) -distclean $(DISTCLEANFLAGS)
+
+setup.data:
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+configure:
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+.PHONY: build doc test all install uninstall reinstall clean distclean configure
+
+# OASIS_STOP
+
+
+test: build
+		ocamlopt -ppx ./$(TARGET).native ./tests/test_$(TARGET).ml -o ./test_$(TARGET).native
+			./test_$(TARGET).native
+
+process: build
+		ocamlopt -dsource -ppx ./$(TARGET).native ./tests/test_$(TARGET).ml -o ./test_$(TARGET).native
+
+source: build
+		ocamlopt -dsource ./tests/test_$(TARGET).ml
+
+tree: build
+		ocamlopt -dparsetree -ppx ./$(TARGET).native ./tests/test_$(TARGET).ml
 
